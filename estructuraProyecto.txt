@@ -1,0 +1,88 @@
+Estructura del proyecto: MVC + FrontController
+Define la división de carpetas/archivos dentro del proyecto.
+    > app --> Código personal del proyecto (funcionamiento). 
+        > controllers
+        > models 
+    
+    > bootstrap --> versión de bootstrap y sus dependencias.
+    
+    > config --> Archivos de configuración del proyecto: BDs, app, caché, mails, etc.
+        > app.php --> lenguaje, zona horaria, etc.      
+        > database.php --> conexión a BD.
+
+    > public --> Contiene a index.php (punto de entrada de todas las solicitudes - Público) 
+                 y la "estética/estructura visual" del proyecto.
+
+    > resources
+        > views --> Vistas del proyecto. HTML que usan los Controllers para mostrar la 
+                    información (no JS, no imágenes). 
+                    Una carpeta por cada controller.
+                    Una carpeta templete para usar plantillas generales heredadas.  
+        > lang --> Objetos con los textos fijos de nuestra web (cambian con poca frecuencia).
+
+
+. Modelo: es la lógica de negocios. Es decir las clases y métodos que se comunican directamente con 
+  la base de datos.
+. Vista: es la encargada de mostrar la información al usuario, de forma gráfica y legible.
+. Controlador: el intermediario entre la vista y el modelo, se encarga de controlar las interacciones
+  del usuario en la vista, pide los datos al modelo y los devuelve de nuevo a la vista para que esta
+  los muestre al usuario. Es decir las llamadas a clases y métodos, y los datos recibidos de formularios.
+
+El funcionamiento básico del patrón MVC, se resume en:
+    El usuario realiza una petición.
+    El controlador captura la petición.
+    Hace la llamada al modelo correspondiente.
+    El modelo sera el encargado de interactuar con la base de datos.
+    El controlador recibe la información y la enviá a la vista.
+    La vista muestra la información.
+
+Las vistas se componen de una "vista base" y desde el controlador le envío al base qué body específico debe cargar.
+
+Funcionamiento del proyecto MVC - Ejemplo:
+1) La aplicación comienza y "pasa siempre" por index.php; que es el encargado hacer la invocación de la aplicación 
+   que queremos realizar a un controlador específico: $routes -> invoke($controller, $action);
+   El controlador y la acción pueden ser enviados por POST o GET dependiendo si es un formulario o href respectivamente.
+
+2) El routes.php que tiene la "invocación" se encarga de verificar estos dos parámetros y dependiendo de ellos tomando
+   las distintas acciones.
+   Primero se carga el controlador que se desea usar ($controllerCharged = $this -> loadController($controller);) y luego
+   se ejecuta la acción que tiene ese controller ($this -> executeAccion($controllerCharged, $action);)
+
+3) En este punto ya tenemos un controlador cargado listo para ejecutar las acciones que posee. Como en el punto anterior,
+   a un controlador se le pide una acción, por ejemplo al controlador LoginController su método llamado login 
+   (public function login()). Realizará todo lo que poseea este método.
+   En estos métodos del controlador, deberemos incluir el modelo necesario (en caso de tener consultas a BDs o integraciones),
+   hacer las "operaciones necesarias/tratamiento de los datos" y luego incluir a vista deseada.
+   
+   ej:
+    public function login(){
+      incluyo modelo X
+      --operaciones
+      incluto vista X
+    }
+
+4) La vista es llamada desde un controlador y se muestra.
+   Esta vista está construída desde una Base y se le envía desde el controlador cuál es el Body que quiero mostrar:
+   
+   $bodyToCharge = "login/bodyLogin.php";
+   include VIEWS."base/basePage.php";
+
+
+
+----------------------------------- Config ----------------------------------------
+Configurar >> 
+  1) app.php --> 
+     . $public : Hay que defirnirle el nombre que tendrá la url a lo largo de todo el proyecto (reemplaza a la carpeta "public").
+       localhost/project_name/$public/index.php
+     . Se redefine el nombre a la carpeta pública por el que seleccionemos en $public - Afecta a todos los enlaces utilizados dentro
+       del proyecto.
+  
+  2) Deberán proporcionarse las credenciales de las BDs en caso de usar
+
+  3) Se alternará entre los distintos entornos (PRODUCTION, TESTING, DEVELOPMENT o LOCALHOST), seleccionando el deseado para utilizar:
+     define("ENVIRONMENT", 'LOCALHOST');
+
+
+----------------------------------- Git ----------------------------------------
+Git del proyecto >>
+https://git.opds.gba.gov.ar/desarrollo/plataformaeducacion    

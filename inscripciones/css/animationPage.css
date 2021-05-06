@@ -1,0 +1,19 @@
+/* Add animation to "body" */
+.animate-body {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+}
+  
+@keyframes animatebottom { 
+    from{ bottom:-10px; opacity:0 } 
+    to{ bottom:0; opacity:2 }
+}
+
+/* navBar -> Style the active class (and buttons on mouse-over) */
+.active, .btn:hover {
+    background-color: #9999;
+    color: black;
+} 

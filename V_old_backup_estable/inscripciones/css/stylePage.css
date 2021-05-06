@@ -1,0 +1,17 @@
+/* Style the active class (and buttons on mouse-over) */
+.active, .btn:hover {
+    background-color: #9999;
+    color: black;
+} 
+
+/* banner gradient colors in diagonal with image */
+.banner-gradient{ 
+    margin-top:-20px;
+    position: relative;
+    width:100%;
+    height:180px;
+    /* background-image: linear-gradient(to left bottom, #5dbcd2, #5dbcd2, #ffffff, #ffffff, #f8f9fa); */
+    overflow:hidden;
+}
+
+
